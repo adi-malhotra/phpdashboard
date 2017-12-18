@@ -1,0 +1,205 @@
+CREATE TABLE application_master
+(
+  application_id bigserial NOT NULL,
+  application_name character varying(250) NOT NULL,
+  is_active boolean NOT NULL DEFAULT false,
+  created_by numeric(5,0) NOT NULL,
+  creation_date timestamp without time zone NOT NULL DEFAULT now(),
+  modified_by numeric(5,0),
+  modified_date timestamp without time zone,
+  description character varying(254),
+  CONSTRAINT adm_application_pkey PRIMARY KEY (application_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE application_master
+  OWNER TO postgres;
+COMMENT ON TABLE application_master
+  IS 'Application Master';
+
+-- Table: link_master
+
+-- DROP TABLE link_master;
+
+CREATE TABLE link_master
+(
+  id serial NOT NULL,
+  link_url character varying,
+  link_name character varying,
+  created_at timestamp without time zone NOT NULL DEFAULT now(),
+  created_by numeric,
+  is_active boolean DEFAULT true,
+  application_id bigint,
+  link_description character varying(200), -- Link Description
+  parent_link_id bigint, -- Parent Link
+  link_type bigint,
+  order_id numeric(2,0), -- Order by
+  CONSTRAINT link_mast_pkey PRIMARY KEY (id),
+  CONSTRAINT link_master_application_id_fkey FOREIGN KEY (application_id)
+      REFERENCES application_master (application_id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT link_master_link_type_fkey FOREIGN KEY (link_type)
+      REFERENCES link_type_master (id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT link_master_parent_link_id_fkey FOREIGN KEY (parent_link_id)
+      REFERENCES link_master (id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE link_master
+  OWNER TO postgres;
+COMMENT ON COLUMN link_master.link_description IS 'Link Description';
+COMMENT ON COLUMN link_master.parent_link_id IS 'Parent Link ';
+COMMENT ON COLUMN link_master.order_id IS 'Order by ';
+
+
+-- Table: link_type_master
+
+-- DROP TABLE link_type_master;
+
+CREATE TABLE link_type_master
+(
+  id serial NOT NULL,
+  "desc" character(1), -- Link Type Description
+  is_active boolean,
+  CONSTRAINT link_type_master_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE link_type_master
+  OWNER TO postgres;
+COMMENT ON COLUMN link_type_master."desc" IS 'Link Type Description';
+
+
+-- Table: role_link_map
+
+-- DROP TABLE role_link_map;
+
+CREATE TABLE role_link_map
+(
+  id serial NOT NULL,
+  link_id bigint,
+  role_id bigint,
+  is_active boolean,
+  CONSTRAINT role_link_map_pkey PRIMARY KEY (id),
+  CONSTRAINT role_link_map_link_id_fkey FOREIGN KEY (link_id)
+      REFERENCES link_master (id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT role_link_map_role_id_fkey FOREIGN KEY (role_id)
+      REFERENCES role_master (role_id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE role_link_map
+  OWNER TO postgres;
+
+  -- Table: role_master
+
+-- DROP TABLE role_master;
+
+CREATE TABLE role_master
+(
+  role_desc character varying(250) NOT NULL,
+  is_active boolean NOT NULL DEFAULT false,
+  created_by numeric(5,0) NOT NULL,
+  creation_date timestamp without time zone NOT NULL DEFAULT now(),
+  modified_by numeric(5,0),
+  modified_date timestamp without time zone,
+  role_id serial NOT NULL,
+  CONSTRAINT role_master_pkey PRIMARY KEY (role_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE role_master
+  OWNER TO personnel;
+COMMENT ON TABLE role_master
+  IS 'Role Master';
+
+
+  -- Table: status_master
+
+-- DROP TABLE status_master;
+
+CREATE TABLE status_master
+(
+  id serial NOT NULL,
+  application_id integer,
+  status_desc character varying,
+  is_active boolean NOT NULL DEFAULT true,
+  CONSTRAINT status_master_pkey PRIMARY KEY (id),
+  CONSTRAINT status_master_application_id_fkey FOREIGN KEY (application_id)
+      REFERENCES application_master (application_id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE status_master
+  OWNER TO postgres;
+
+
+  -- Table: user_auth
+
+-- DROP TABLE user_auth;
+
+CREATE TABLE user_auth
+(
+  login_id character varying(255),
+  password character varying(255),
+  emp_code bigint,
+  created_by bigint,
+  created_date timestamp without time zone,
+  modified_by bigint,
+  modified_date timestamp without time zone,
+  from_date timestamp without time zone,
+  to_date timestamp without time zone,
+  is_active boolean,
+  is_admin boolean,
+  session_token bigint,
+  org_id bigint, -- Organization ID
+  user_id serial NOT NULL,
+  CONSTRAINT user_auth_pkey PRIMARY KEY (user_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE user_auth
+  OWNER TO postgres;
+COMMENT ON COLUMN user_auth.org_id IS 'Organization ID';
+
+-- Table: user_role
+
+-- DROP TABLE user_role;
+
+CREATE TABLE user_role
+(
+  auth_user_id bigint,
+  role_id bigint,
+  is_active boolean NOT NULL DEFAULT false,
+  created_by numeric(5,0) NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  modified_by numeric(5,0),
+  modified_date timestamp without time zone,
+  role_sl_no serial NOT NULL,
+  CONSTRAINT emp_role_pkey PRIMARY KEY (role_sl_no),
+  CONSTRAINT user_role_auth_user_id_fkey FOREIGN KEY (auth_user_id)
+      REFERENCES user_auth (user_id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT user_role_role_id_fkey FOREIGN KEY (role_id)
+      REFERENCES role_master (role_id) MATCH FULL
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE user_role
+  OWNER TO postgres;
+COMMENT ON TABLE user_role
+  IS 'User mapped with role';
