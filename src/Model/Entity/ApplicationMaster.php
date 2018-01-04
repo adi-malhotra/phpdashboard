@@ -34,6 +34,7 @@ class ApplicationMaster extends Entity
         'is_active' => true,
         'created_by' => true,
         'creation_date' => true,
+        'quantity'=>true,
         'modified_by' => true,
         'modified_date' => true,
         'description' => true,

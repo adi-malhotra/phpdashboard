@@ -7,7 +7,7 @@
 <div class="applicationMaster index large-9 medium-8 columns content">
   <div class="box">
     <div class="box-header with-border">
-      <h3><?= __('Application Master') ?></h3>
+      <h3><?= __('Stock Master') ?></h3>
     </div>
     <div class = "box-body">
     <table class="table table-bordered">
@@ -15,7 +15,7 @@
             <tr>
                 <th style = "text-align:center"><?= $this->Paginator->sort('application_name') ?></th>
                 <th style = "text-align:center"><?= $this->Paginator->sort('is_active') ?></th>
-                <th style = "text-align:center"><?= $this->Paginator->sort('description') ?></th>
+                <th style = "text-align:center"><?= $this->Paginator->sort('quantity') ?></th>
                 <th style = "text-align:center" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -26,7 +26,7 @@
                 <td align ="center">
                 <?php if($applicationMaster->is_active) {?><span class = "label label-success">Active</span></td>
                 <?php } else {?><span class = "label label-danger">Inactive</span></td><?php }?>
-                <td align = "center"><?= h($applicationMaster->description) ?></td>
+                <td align = "center"><?= h($applicationMaster->quantity) ?></td>
                 <td class="actions" align ="center" style="width:15%">
                     <span class="btn btn-block btn-info" style = "width: 50%;"><?= $this->Html->link(__('Edit'), ['action' => 'edit', $applicationMaster->application_id]) ?></span>
                 </td>

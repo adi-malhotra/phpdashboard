@@ -43,7 +43,8 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-
+        $auth_users = [];
+        $this->set('auth_users',$auth_users);
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
@@ -68,7 +69,7 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
-	$this->viewBuilder()->theme('AdminLTE');
-	$this->viewBuilder()->className('AdminLTE.AdminLTE');
+      	$this->viewBuilder()->theme('AdminLTE');
+      	$this->viewBuilder()->className('AdminLTE.AdminLTE');
     }
 }

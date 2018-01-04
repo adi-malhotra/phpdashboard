@@ -1,4 +1,4 @@
-# CakePHP Application Skeleton
+# CakePHP Dashboard
 
 ## Installation
 

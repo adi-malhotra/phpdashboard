@@ -23,7 +23,7 @@
       <div class="form-group">
         <label for = "password" class="col-sm-2 control-label">Password</label>
         <div class="col-sm-10">
-          <?= $this->Form->password("login_id") ?>
+          <?= $this->Form->password("password") ?>
         </div>
       </div>
       <br>

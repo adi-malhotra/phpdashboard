@@ -16,11 +16,10 @@ class UserAuthController extends AppController
      * Index method
      *
      * @return \Cake\Http\Response|void
-     */
+    */
     public function index()
     {
         $userAuth = $this->paginate($this->UserAuth);
-
         $this->set(compact('userAuth'));
         $this->set('_serialize', ['userAuth']);
     }
@@ -32,6 +31,39 @@ class UserAuthController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+    public function login(){
+      $userAuth = $this->UserAuth->newEntity();
+      $auth_users = $this->UserAuth->find()
+                         ->toArray();
+      if($this->request->is('post')){
+        $user = $this->request->getData();
+        $auth_users = $this->UserAuth->find()
+                         ->toArray();
+        $found = false;
+        foreach($auth_users as $users){
+          if($users->login_id==$user["login_id"]){
+            $found = true;
+            $found_user = $users;
+            break;
+          }
+        }
+        if($found==false || $found_user->password!=$user["password"]){
+          $this->Flash->error(__('Invalid username or password, try again'));
+        }
+        else{
+          return $this->redirect(
+            ["controller"=>"ApplicationMaster",
+              "action" => "index"
+            ]
+          );
+        }
+      }
+      $this->set('userAuth',$userAuth);
+      $this->set('auth_users',$auth_users);
+    }
+   // public function logout(){
+   //     return $this->redirect($this->Auth->logout());
+   // }
     public function view($id = null)
     {
         $userAuth = $this->UserAuth->get($id, [
