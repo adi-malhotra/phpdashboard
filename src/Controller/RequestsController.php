@@ -38,11 +38,15 @@ class RequestsController extends AppController
      */
     public function view($id = null)
     {
-        $request = $this->Requests->get($id, [
+        $current = $this->Requests->get($id, [
             'contain' => []
         ]);
-
-        $this->set('request', $request);
+        $request = $this->Requests->find('all')
+                          ->contain('ApplicationMaster')
+                          ->where(['ApplicationMaster.application_id'=>$current->application_id])
+                          ->where(['Requests.id'=>$id])
+                          ->toArray();
+        $this->set('request', $request[0]);
         $this->set('_serialize', ['request']);
     }
 
@@ -63,6 +67,12 @@ class RequestsController extends AppController
             }
             $this->Flash->error(__('The request could not be saved. Please, try again.'));
         }
+        $x = $this->Requests->ApplicationMaster->find()->toArray();
+        $applications = [];
+        foreach($x as $application){
+          $applications[$application->application_id]=$application->application_name;
+        }
+        $this->set('applications',$applications);
         $this->set(compact('request'));
         $this->set('_serialize', ['request']);
     }

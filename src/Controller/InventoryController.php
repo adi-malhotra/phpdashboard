@@ -40,11 +40,17 @@ class InventoryController extends AppController
      */
     public function view($id = null)
     {
-        $inventory = $this->Inventory->get($id, [
+        $current = $this->Inventory->get($id, [
             'contain' => []
         ]);
-
-        $this->set('inventory', $inventory);
+        $inventory = $this->Inventory->find('all')
+                          ->contain('ApplicationMaster')
+                          ->where(['ApplicationMaster.application_id'=>$current->application_id])
+                          ->where(['Inventory.id'=>$id])
+                          ->toArray();
+        // pr($inventory);
+        // die;
+        $this->set('inventory', $inventory[0]);
         $this->set('_serialize', ['inventory']);
     }
 
@@ -90,7 +96,7 @@ class InventoryController extends AppController
             }
             $this->Flash->error(__('The inventory could not be saved. Please, try again.'));
         }
-        $x = $this->Requests->ApplicationMaster->find()->toArray();
+        $x = $this->Inventory->ApplicationMaster->find()->toArray();
         $applications = [];
         foreach($x as $application){
           $applications[$application->application_id]=$application->application_name;

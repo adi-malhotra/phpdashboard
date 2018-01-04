@@ -26,7 +26,12 @@
                 <td align = "center"><?= $this->Number->format($inventory->quantity) ?></td>
                 <td align = "center"><?= h($inventory->transaction_date) ?></td>
                 <td class="actions" align ="center" style="width:15%">
-                    <span class="btn btn-block btn-info" style = "width: 50%;"><?= $this->Html->link(__('Edit'), ['action' => 'edit', $inventory->id]) ?></span>
+                    <span class="btn btn-block btn-danger" style = "width: 50%;"><?= $this->Form->postLink(
+                                  __('Delete'),
+                                  ['action' => 'delete', $inventory->id],
+                                  ['confirm' => __('Are you sure you want to delete # {0}?', $inventory->id)]
+                              )
+                    ?></span>
                 </td>
             </tr>
             <?php endforeach; ?>

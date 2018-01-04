@@ -36,6 +36,8 @@
             <dd><?= h($applicationMaster->application_name) ?></dd>
             <dt scope="row"><?= __('Description') ?></th>
             <dd><?= h($applicationMaster->description) ?></dd>
+            <dt scope="row"><?= __('Quantity') ?></th>
+            <dd><?= h($applicationMaster->quantity) ?></dd>
             <dt scope="row"><?= __('Created By') ?></th>
             <dd><?= $this->Number->format($applicationMaster->created_by) ?></dd>
             <dt scope="row"><?= __('Modified By') ?></th>

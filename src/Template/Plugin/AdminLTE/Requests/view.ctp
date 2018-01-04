@@ -4,33 +4,44 @@
  * @var \App\Model\Entity\Request $request
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Request'), ['action' => 'edit', $request->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Request'), ['action' => 'delete', $request->id], ['confirm' => __('Are you sure you want to delete # {0}?', $request->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Requests'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Request'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
+<div style = "padding:10px;">
+<div class="row">
+  <div class = "col-md-4" style= "margin:0 80 0 0;">
+    <div class="small-box bg-aqua" style="text-align:center;font-size: 1.2em;padding:10px;">
+        <i class = "fa fa-arrow-circle-left"></i>
+    <?= $this->Html->link('Go Back', ['action' => 'index']) ?>
+    </div>
+  </div>
+  <div class = "col-md-4"  style= "margin:0 80 0;">
+    <div class="small-box bg-aqua" style="text-align:center; font-size: 1.2em;padding:10px;">
+      <i class = "fa fa-edit"></i>
+      <?= $this->Html->link(__('Edit'), ['action' => 'edit', $request->id]) ?>
+    </div>
+  </div>
+  <div class = "col-md-4"  style= "margin:0 0 0 80;">
+    <div class="small-box bg-red" style="text-align:center; font-size: 1.2em;padding:10px;">
+      <i class = "fa fa-trash"></i>
+      <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $request->id], ['confirm' => __('Are you sure you want to delete # {0}?', $request->id)]) ?>
+    </div>
+  </div>
+</div>
 <div class="requests view large-9 medium-8 columns content">
-    <h3><?= h($request->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Application Name') ?></th>
-            <td><?= h($request->application_name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($request->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Quantity') ?></th>
-            <td><?= $this->Number->format($request->quantity) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Request Status') ?></th>
-            <td><?= $request->request_status ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
+  <div class="box box-solid">
+    <div class="box-header with-border">
+      <h3><?= h($request->id) ?></h3>
+    </div>
+    <div class="box-body">
+      <dl class="dl-horizontal">
+        <dt scope="row"><?= __('Application Name') ?></dt>
+        <dd><?= $this->Html->link($request->application_master->application_name, ['controller' => 'ApplicationMaster', 'action' => 'view', $request->application_id]); ?></dd>
+        <dt scope="row"><?= __('Id') ?></dt>
+        <dd><?= $this->Number->format($request->id) ?></dd>
+        <dt scope="row"><?= __('Quantity') ?></dt>
+        <dd><?= $this->Number->format($request->quantity) ?></dd>
+        <dt scope="row"><?= __('Request Status') ?></dt>
+        <dd><?= $request->request_status ? __('Yes') : __('No'); ?></dd>
+      </dl>
+    </div>
+  </div>
+</div>
 </div>
