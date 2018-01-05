@@ -36,6 +36,13 @@
         </div>
         <br>
         <div class="form-group">
+          <label for = "item_type" class="col-sm-2 control-label">Item Type</label>
+          <div class="col-sm-10">
+            <?= $this->Form->select("item_type",$item_types,["default"=>$applicationMaster->item_type,"empty"=>true]) ?>
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
           <label for = "quantity" class="col-sm-2 control-label">Quantity</label>
           <div class="col-sm-10">
             <?= $this->Form->text("quantity",["default"=>$applicationMaster->quantity]) ?>

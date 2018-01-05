@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\RequestsTable;
+use App\Model\Table\ItemTypeMasterTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RequestsTable Test Case
+ * App\Model\Table\ItemTypeMasterTable Test Case
  */
-class RequestsTableTest extends TestCase
+class ItemTypeMasterTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\RequestsTable
+     * @var \App\Model\Table\ItemTypeMasterTable
      */
-    public $Requests;
+    public $ItemTypeMaster;
 
     /**
      * Fixtures
@@ -24,9 +24,7 @@ class RequestsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.requests',
-        'app.application_master',
-        'app.user_auth'
+        'app.item_type_master'
     ];
 
     /**
@@ -37,8 +35,8 @@ class RequestsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Requests') ? [] : ['className' => RequestsTable::class];
-        $this->Requests = TableRegistry::get('Requests', $config);
+        $config = TableRegistry::exists('ItemTypeMaster') ? [] : ['className' => ItemTypeMasterTable::class];
+        $this->ItemTypeMaster = TableRegistry::get('ItemTypeMaster', $config);
     }
 
     /**
@@ -48,7 +46,7 @@ class RequestsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Requests);
+        unset($this->ItemTypeMaster);
 
         parent::tearDown();
     }
@@ -69,6 +67,16 @@ class RequestsTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

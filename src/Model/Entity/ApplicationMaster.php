@@ -37,6 +37,7 @@ class ApplicationMaster extends Entity
         'quantity'=>true,
         'modified_by' => true,
         'modified_date' => true,
+        'item_type' => true,
         'description' => true,
         'application' => true
     ];

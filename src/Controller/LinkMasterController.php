@@ -26,7 +26,12 @@ class LinkMasterController extends AppController
         $this->set("pages",$pages);
         $this->set('_serialize', ['linkMaster']);
     }
-
+    public function isAuthorized($user){
+      $action = $this->request->getParam('action');
+      if(in_array($action,['index','view','delete','edit','add']) && isset($user) && $user['user_role']=='sadmin')
+        return true;
+      return false;
+    }
     /**
      * View method
      *

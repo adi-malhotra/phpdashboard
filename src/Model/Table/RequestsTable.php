@@ -37,6 +37,9 @@ class RequestsTable extends Table
         $this->belongsTo('ApplicationMaster', [
             'foreignKey' => 'application_id'
         ]);
+        $this->belongsTo('UserAuth', [
+            'foreignKey' => 'user_id'
+        ]);
     }
 
     /**

@@ -53,7 +53,14 @@ class InventoryController extends AppController
         $this->set('inventory', $inventory[0]);
         $this->set('_serialize', ['inventory']);
     }
-
+    public function isAuthorized($user){
+      $action = $this->request->getParam('action');
+      if(in_array($action,['index','delete','view']) && isset($user) && $user['user_role']=='admin')
+        return true;
+      else if(in_array($action,['index','view']) && isset($user) && $user['user_role']=='checker')
+        return true;
+      return false;
+    }
     /**
      * Add method
      *

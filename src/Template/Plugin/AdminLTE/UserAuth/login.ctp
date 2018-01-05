@@ -9,7 +9,7 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
       <p class="login-box-msg">Sign in to start your session</p>
-      <?= $this->Form->create($userAuth) ?>
+      <?= $this->Form->create() ?>
         <div class="form-group has-feedback">
           <?= $this->Form->input("login_id",["type"=>"text","placeholder"=>"Email"]) ?>
         </div>
@@ -21,7 +21,7 @@
         </div>
       </form>
       <br/>
-      <div class="text-center"><?= $this->Html->link(__('Register a new membership'), ['action' => 'add']) ?></div>
+      <div class="text-center"><?= $this->Html->link(__('Register a new membership'), ['action' => 'register']) ?></div>
     </div>
   </div>
 </body>

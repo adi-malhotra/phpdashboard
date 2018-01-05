@@ -27,12 +27,6 @@
         </div>
       </div>
       <br>
-      <div class="form-group">
-        <label for = "request_status" class="col-sm-2 control-label">Request Status</label>
-        <div class="col-sm-10">
-          <?= $this->Form->checkbox("request_status") ?>
-        </div>
-      </div>
     </div>
     <div class="box-footer">
       <?= $this->Form->button(__('Submit')) ?>

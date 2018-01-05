@@ -16,6 +16,7 @@
                 <th style = "text-align:center"><?= $this->Paginator->sort('application_name') ?></th>
                 <th style = "text-align:center"><?= $this->Paginator->sort('is_active') ?></th>
                 <th style = "text-align:center"><?= $this->Paginator->sort('quantity') ?></th>
+                <th style = "text-align:center"><?= $this->Paginator->sort('item_type') ?></th>
                 <th style = "text-align:center" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
                 <?php if($applicationMaster->is_active) {?><span class = "label label-success">Active</span></td>
                 <?php } else {?><span class = "label label-danger">Inactive</span></td><?php }?>
                 <td align = "center"><?= h($applicationMaster->quantity) ?></td>
+                <td align = "center"><?= $applicationMaster->has('item_type_master')? h($applicationMaster->item_type_master->item_type_desc): '' ?></td>
                 <td class="actions" align ="center" style="width:15%">
                     <span class="btn btn-block btn-info" style = "width: 50%;"><?= $this->Html->link(__('Edit'), ['action' => 'edit', $applicationMaster->application_id]) ?></span>
                 </td>

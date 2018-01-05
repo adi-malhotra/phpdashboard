@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Auth\DigestAuthenticate;
 
 /**
  * UserAuth Model
@@ -37,17 +38,6 @@ class UserAuthTable extends Table
         $this->setTable('user_auth');
         $this->setDisplayField('user_id');
         $this->setPrimaryKey('user_id');
-
-        $this->belongsTo('Logins', [
-            'foreignKey' => 'login_id'
-        ]);
-        $this->belongsTo('Orgs', [
-            'foreignKey' => 'org_id'
-        ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
     }
 
     /**

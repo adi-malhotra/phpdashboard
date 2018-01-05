@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\View\ViewBuilder;
 
 /**
  * Application Controller
@@ -37,14 +38,36 @@ class AppController extends Controller
      *
      * @return void
      */
-    public function initialize()
-    {
+    public function initialize() {
         parent::initialize();
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-        $auth_users = [];
-        $this->set('auth_users',$auth_users);
+        // $auth_users = [];
+        // $this->set('auth_users',$auth_users);
+        $this->loadComponent('Auth', [
+          'authorize'=>'Controller',
+          'authenticate' => [
+            'Form' => [
+              'userModel' =>'UserAuth',
+              'fields' => ['username' => 'login_id']
+            ]
+          ],
+          'loginAction' => array(
+            'controller' => 'UserAuth',
+            'action'=> 'login',
+          ),
+          'unauthorizedRedirect' => $this->referer(),
+          'loginRedirect'=>array(
+            'controller' => 'Pages',
+            'action'=>'display',
+            'home'
+          ),
+          'logoutRedirect' => array(
+            'controller' => 'UserAuth',
+            'action' =>'login'
+          )
+        ]);
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
@@ -52,7 +75,11 @@ class AppController extends Controller
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
     }
-
+    public function isAuthorized($user){
+        if ($this->request->getParam('action') === 'add') {
+            return true;
+        }
+    }
     /**
      * Before render callback.
      *

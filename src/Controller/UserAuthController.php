@@ -2,6 +2,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Auth\DigestAuthenticate;
+use Cake\View\ViewBuilder;
 
 /**
  * UserAuth Controller
@@ -17,11 +21,34 @@ class UserAuthController extends AppController
      *
      * @return \Cake\Http\Response|void
     */
+    public function initialize(){
+      parent::initialize();
+      $this->Auth->config('authenticate', [
+          'Form' => [
+            'fields' => ['username' => 'login_id'],
+            'userModel' => 'UserAuth'
+          ]
+      ]);
+      $this->Auth->allow(['logout','register']);
+    }
+    public function isAuthorized($user){
+      $action = $this->request->getParam('action');
+      if(in_array($action,['index','add','edit','delete','view']) && isset($user) && $user['user_role']=='admin'){
+        return true;
+      }
+      return false;
+    }
     public function index()
     {
         $userAuth = $this->paginate($this->UserAuth);
         $this->set(compact('userAuth'));
         $this->set('_serialize', ['userAuth']);
+    }
+
+    protected function _setPassword($password){
+      if(strlen($password) > 0){
+        return (new DefaultPasswordHasher)->hash($password);
+      }
     }
 
     /**
@@ -32,38 +59,47 @@ class UserAuthController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function login(){
-      $userAuth = $this->UserAuth->newEntity();
-      $auth_users = $this->UserAuth->find()
-                         ->toArray();
-      if($this->request->is('post')){
-        $user = $this->request->getData();
-        $auth_users = $this->UserAuth->find()
-                         ->toArray();
-        $found = false;
-        foreach($auth_users as $users){
-          if($users->login_id==$user["login_id"]){
-            $found = true;
-            $found_user = $users;
-            break;
-          }
-        }
-        if($found==false || $found_user->password!=$user["password"]){
-          $this->Flash->error(__('Invalid username or password, try again'));
-        }
-        else{
-          return $this->redirect(
-            ["controller"=>"ApplicationMaster",
-              "action" => "index"
-            ]
-          );
-        }
-      }
-      $this->set('userAuth',$userAuth);
-      $this->set('auth_users',$auth_users);
+      // $this->viewBuilder()->setLayout('default');
+      if ($this->request->is('post')) {
+       $user = $this->Auth->identify();
+       if ($user) {
+           $this->Auth->setUser($user);
+           return $this->redirect($this->Auth->redirectUrl());
+       }
+       $this->Flash->error('Your username or password is incorrect.');
     }
-   // public function logout(){
-   //     return $this->redirect($this->Auth->logout());
-   // }
+      // $auth_users = $this->UserAuth->find()
+      //                    ->toArray();
+      // if($this->request->is('post')){
+      //   $user = $this->request->getData();
+      //   $auth_users = $this->UserAuth->find()
+      //                    ->toArray();
+      //   $found = false;
+      //   foreach($auth_users as $users){
+      //     if($users->login_id==$user["login_id"]){
+      //       $found = true;
+      //       $found_user = $users;
+      //       break;
+      //     }
+      //   }
+      //   if($found==false || $found_user->password!=$user["password"]){
+      //     $this->Flash->error(__('Invalid username or password, try again'));
+      //   }
+      //   else{
+      //     return $this->redirect(
+      //       ["controller"=>"ApplicationMaster",
+      //         "action" => "index"
+      //       ]
+      //     );
+      //   }
+      // }
+      // $this->set('userAuth',$userAuth);
+      // $this->set('auth_users',$auth_users);
+    }
+   public function logout(){
+      $this->Flash->success('You are now logged out.');
+      return $this->redirect($this->Auth->logout());
+   }
     public function view($id = null)
     {
         $userAuth = $this->UserAuth->get($id, [
@@ -74,6 +110,26 @@ class UserAuthController extends AppController
         $this->set('_serialize', ['userAuth']);
     }
 
+    public function register() {
+      if($this->request->is('post')){
+      $data = $this->request->getData();
+      // debug($data);
+      // die;
+      $newuser['login_id'] = $data['login_id'];
+      $newuser['password'] = $this->_setPassword($data['password']);
+      $newuser['org_id'] = $data['org_id'];
+      $newuser['emp_code'] = $data['emp_code'];
+      $user = $this->UserAuth->newEntity($newuser);
+      if ($this->UserAuth->save($user)) {
+          $this->Auth->setUser($user->toArray());
+          return $this->redirect([
+              'controller' => 'Pages',
+              'action' => 'display',
+              'home'
+          ]);
+      }
+    }
+    }
     /**
      * Add method
      *

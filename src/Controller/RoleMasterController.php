@@ -24,7 +24,13 @@ class RoleMasterController extends AppController
         $this->set(compact('roleMaster'));
         $this->set('_serialize', ['roleMaster']);
     }
-
+    public function isAuthorized($user){
+      $action = $this->request->getParam('action');
+      if(in_array($action,['index','edit','add','delete','view']) && isset($user) && $user['user_role']=='sadmin'){
+        return true;
+      }
+      return false;
+    }
     /**
      * View method
      *

@@ -4,14 +4,14 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Request Entity
+ * ItemTypeMaster Entity
  *
- * @property int $id
- * @property string $application_name
- * @property int $quantity
- * @property bool $request_status
+ * @property int $item_type_id
+ * @property string $item_type_desc
+ *
+ * @property \App\Model\Entity\ItemType $item_type
  */
-class Request extends Entity
+class ItemTypeMaster extends Entity
 {
 
     /**
@@ -24,9 +24,7 @@ class Request extends Entity
      * @var array
      */
     protected $_accessible = [
-        'application_id' => true,
-        'quantity' => true,
-        'request_status' => true,
-        'user_id'=>true
+        'item_type_desc' => true,
+        'item_type' => true
     ];
 }

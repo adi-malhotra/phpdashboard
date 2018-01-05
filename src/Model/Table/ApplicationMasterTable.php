@@ -40,6 +40,9 @@ class ApplicationMasterTable extends Table
             'foreignKey' => 'application_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('ItemTypeMaster', [
+            'foreignKey' => 'item_type',
+        ]);
     }
 
     /**

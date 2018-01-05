@@ -38,6 +38,7 @@ class UserAuthFixture extends TestFixture
         'session_token' => ['type' => 'biginteger', 'length' => 20, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'org_id' => ['type' => 'biginteger', 'length' => 20, 'default' => null, 'null' => true, 'comment' => 'Organization ID', 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'user_id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
+        'user_role' => ['type' => 'string', 'length' => 250, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['user_id'], 'length' => []],
         ],
@@ -64,6 +65,7 @@ class UserAuthFixture extends TestFixture
             'is_admin' => 1,
             'session_token' => 1,
             'org_id' => 1,
+            'user_role' =>'Lorem ipsum dolor sit amet',
             'user_id' => 1
         ],
     ];

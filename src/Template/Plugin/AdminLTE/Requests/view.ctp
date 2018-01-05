@@ -36,6 +36,8 @@
         <dd><?= $this->Html->link($request->application_master->application_name, ['controller' => 'ApplicationMaster', 'action' => 'view', $request->application_id]); ?></dd>
         <dt scope="row"><?= __('Id') ?></dt>
         <dd><?= $this->Number->format($request->id) ?></dd>
+        <dt scope="row"><?= __('Username') ?></dt>
+        <dd><?= $this->Number->format($request->user_auth->login_id) ?></dd>
         <dt scope="row"><?= __('Quantity') ?></dt>
         <dd><?= $this->Number->format($request->quantity) ?></dd>
         <dt scope="row"><?= __('Request Status') ?></dt>

@@ -52,6 +52,7 @@ class UserAuth extends Entity
         'session_token' => true,
         'org_id' => true,
         'login' => true,
+        'user_role'=>true,
         'org' => true,
         'user' => true
     ];

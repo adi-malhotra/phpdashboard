@@ -19,12 +19,24 @@ class ApplicationMasterController extends AppController
      */
     public function index()
     {
-        $applicationMaster = $this->paginate($this->ApplicationMaster);
-
+        $pages = $this->paginate($this->ApplicationMaster);
+        $applicationMaster = $this->ApplicationMaster->find()
+                                  ->contain('ItemTypeMaster')
+                                  ->toArray();
+                                  // pr($applicationMaster);
+                                  // die;
+        $this->set('pages',$pages);
         $this->set(compact('applicationMaster'));
         $this->set('_serialize', ['applicationMaster']);
     }
-
+    public function isAuthorized($user){
+      $action = $this->request->getParam('action');
+      if(in_array($action,['index','view']) && isset($user)){
+        return true;
+      }
+      else if(in_array($action,['edit','add','delete']) && isset($user) && user['user_role']=='sadmin')
+      return false;
+    }
     /**
      * View method
      *
@@ -73,6 +85,12 @@ class ApplicationMasterController extends AppController
             }
             $this->Flash->error(__('The application master could not be saved. Please, try again.'));
         }
+        $x = $this->ApplicationMaster->ItemTypeMaster->find()->toArray();
+        $item_types = [];
+        foreach($x as $item_type){
+          $item_types[$item_type->item_type_id]=$item_type->item_type_desc;
+        }
+        $this->set('item_types',$item_types);
         $this->set(compact('applicationMaster'));
         $this->set('_serialize', ['applicationMaster']);
     }
@@ -99,6 +117,12 @@ class ApplicationMasterController extends AppController
             }
             $this->Flash->error(__('The application master could not be saved. Please, try again.'));
         }
+        $x = $this->ApplicationMaster->ItemTypeMaster->find()->toArray();
+        $item_types = [];
+        foreach($x as $item_type){
+          $item_types[$item_type->item_type_id]=$item_type->item_type_desc;
+        }
+        $this->set('item_types',$item_types);
         $this->set(compact('applicationMaster'));
         $this->set('_serialize', ['applicationMaster']);
     }
